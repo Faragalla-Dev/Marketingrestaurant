@@ -93,7 +93,7 @@ class RestaurantController extends Controller
     }
 
 
-/////اضافة صوره للمطعم
+    /////اضافة صوره للمطعم
     public function storerestimage(Request $request)
     {
         $request->validate([
@@ -113,7 +113,7 @@ class RestaurantController extends Controller
     }
 
 
-//////////عرض صور المطعم
+    //////////عرض صور المطعم
     public function getrestimages($restaurant_id)
     {
         $images = RestaurantImage::where('restaurant_id', $restaurant_id)->get();
@@ -137,7 +137,7 @@ class RestaurantController extends Controller
             'data' => $image
         ]);
     }
-/////حذف صوره مطعم
+    /////حذف صوره مطعم
     public function deleterestimage($id)
     {
         $image = RestaurantImage::findOrFail($id);
@@ -152,20 +152,42 @@ class RestaurantController extends Controller
             'message' => 'Image deleted successfully'
         ]);
     }
-/////كل المطاعم الخاصه بالشخص الي مسجل دخول
-public function myRestaurants()
-{
-    $userId = Auth::id();
+    /////كل المطاعم الخاصه بالشخص الي مسجل دخول
+    public function myRestaurants()
+    {
+        $userId = Auth::id();
 
-    $restaurants = Restaurant::where('user_id', $userId)->get();
+        $restaurants = Restaurant::where('user_id', $userId)->get();
 
-    return response()->json([
-        'message' => 'My restaurants retrieved successfully',
-        'data' => $restaurants
-    ], 200);
-}
+        return response()->json([
+            'message' => 'My restaurants retrieved successfully',
+            'data' => $restaurants
+        ], 200);
+    }
 
 
+    public function storebusinesstype(Request $request)
+    {
+        $validated = $request->validate([
+            'type' => 'required|in:restaurant,cafe',
+        ]);
+
+        // مثال: تخزين في قاعدة البيانات أو سيشن
+        // هنا هنرجع رد فقط
+        return response()->json([
+            'message' => 'تم اختيار النوع بنجاح',
+            'selected_type' => $validated['type'],
+        ]);
+    }
+    public function getbusinesstypes()
+    {
+        return response()->json([
+            'types' => [
+                'restaurant' => 'مطعم',
+                'cafe' => 'كافيه',
+            ]
+        ]);
+    }
 
 
 
